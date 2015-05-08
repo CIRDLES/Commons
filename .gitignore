@@ -1,0 +1,12 @@
+# Gradle
+.gradle/
+build/
+
+# OS X
+.DS_Store
+
+# Netbeans
+.nb-*
+
+# Vim
+*.swp
