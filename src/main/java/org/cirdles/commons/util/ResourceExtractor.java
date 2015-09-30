@@ -40,7 +40,8 @@ public class ResourceExtractor {
     }
 
     /**
-     * Extracts a resource as a file.
+     * Extracts a resource as a file. Returns {@code null} if the resource
+     * could not be found.
      *
      * @param name the name of the resource
      * @return a temporary file with the same contents as the resource
@@ -71,7 +72,8 @@ public class ResourceExtractor {
     }
 
     /**
-     * Extracts a resource as a file path.
+     * Extracts a resource as a file path. Returns {@code null} if the resource
+     * could not be found.
      *
      * @param name the name of the resource
      * @return a temporary file path with the same contents as the resource
