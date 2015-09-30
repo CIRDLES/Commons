@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * Created by johnzeringue on 9/15/15.
@@ -38,6 +39,14 @@ public class ResourceExtractorTest {
 
         Scanner scanner = new Scanner(path, "UTF-8");
         assertThat(scanner.nextLine(), is("Hello, World!"));
+    }
+
+    @Test
+    public void testExtractNonExistentResource() {
+        Path path = resourceExtractor
+                .extractResourceAsPath("doesNotExist.txt");
+
+        assertThat(path, is(nullValue()));
     }
 
 }
