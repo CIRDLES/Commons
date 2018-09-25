@@ -44,19 +44,57 @@ public class ResourceExtractor {
      * could not be found.
      *
      * @param name the name of the resource
+     * @param prefix    the prefix to use when generating a temporary file name
+     * @param suffix    the suffix to use when generating a temporary file name
      * @return a temporary file with the same contents as the resource
+     *
      * @see Class#getResourceAsStream(String)
      * @see ClassLoader#getResourceAsStream(String)
      */
-    public File extractResourceAsFile(String name) {
+    public File extractResourceAsFile(String name, String prefix, String suffix) {
         File result = null;
-        Path resourcePath = extractResourceAsPath(name);
+        Path resourcePath = extractResourceAsPath(name, prefix, suffix);
 
         if (resourcePath != null) {
             result = resourcePath.toFile();
         }
-
         return result;
+    }
+    public File extractResourceAsFile(String name) {
+        return extractResourceAsFile(name, null, null);
+    }
+
+    /**
+     * Extracts a resource as a file path. Returns {@code null} if the resource
+     * could not be found.
+     *
+     * @param name      the name of the resource
+     * @param prefix    the prefix to use when generating a temporary file name
+     * @param suffix    the suffix to use when generating a temporary file name
+     * @return          a temporary file path with the same contents as the resource
+     *
+     * @see Class#getResourceAsStream(String)
+     * @see ClassLoader#getResourceAsStream(String)
+     */
+    public Path extractResourceAsPath(String name, String prefix, String suffix) {
+        Path result = null;
+        InputStream resourceStream = getResourceAsStream(name);
+
+        // resource must be found
+        if (resourceStream != null) {
+            // should always succeed
+            try {
+                Path tempFile = Files.createTempFile(prefix, suffix);
+                Files.copy(resourceStream, tempFile, REPLACE_EXISTING);
+                result = tempFile;
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return result;
+    }
+    public Path extractResourceAsPath(String name) {
+        return extractResourceAsPath(name, null, null);
     }
 
     private InputStream getResourceAsStream(String name) {
@@ -70,33 +108,4 @@ public class ResourceExtractor {
 
         return result;
     }
-
-    /**
-     * Extracts a resource as a file path. Returns {@code null} if the resource
-     * could not be found.
-     *
-     * @param name the name of the resource
-     * @return a temporary file path with the same contents as the resource
-     * @see Class#getResourceAsStream(String)
-     * @see ClassLoader#getResourceAsStream(String)
-     */
-    public Path extractResourceAsPath(String name) {
-        Path result = null;
-        InputStream resourceStream = getResourceAsStream(name);
-
-        // resource must be found
-        if (resourceStream != null) {
-            // should always succeed
-            try {
-                Path tempFile = Files.createTempFile(null, null);
-                Files.copy(resourceStream, tempFile, REPLACE_EXISTING);
-                result = tempFile;
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-
-        return result;
-    }
-
 }

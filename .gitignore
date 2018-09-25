@@ -2,15 +2,20 @@
 .gradle/
 build/
 
-# OS X
-.DS_Store
+# Netbeans
+nbactions.xml
+.nb-*
 
-# IntelliJ
+# Intellij
 .idea/
+out/
 *.iml
 
-# Netbeans
-.nb-*
+# logs
+*.log
 
 # Vim
 *.swp
+
+# OS X
+.DS_Store
