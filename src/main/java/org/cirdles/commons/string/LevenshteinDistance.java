@@ -57,19 +57,19 @@ public class LevenshteinDistance {
     }
 
     // can be made iterative for better performance
-    private int compute(int i, int j) {
+    private static int compute(String a, int aLength, String b, int bLength) {
         int result;
 
-        if (min(i, j) == 0) {
-            result = max(i, j);
+        if (min(aLength, bLength) == 0) {
+            result = max(aLength, bLength);
         } else {
             int substitutionCost
-                    = indicator(a.charAt(i - 1) != b.charAt(j - 1));
+                    = indicator(a.charAt(aLength - 1) != b.charAt(bLength - 1));
 
             result = minimum(
-                    compute(i - 1, j) + 1,
-                    compute(i, j - 1) + 1,
-                    compute(i - 1, j - 1) + substitutionCost
+                    compute(a, aLength - 1, b, bLength) + 1,
+                    compute(a, aLength, b, bLength - 1) + 1,
+                    compute(a, aLength - 1, b, bLength - 1) + substitutionCost
             );
         }
 
@@ -84,7 +84,10 @@ public class LevenshteinDistance {
      * {@code a} and {@code b}
      */
     public int compute() {
-        return compute(a.length(), b.length());
+        return compute(a, a.length(), b, b.length());
     }
 
+    public static int compute(String a, String b) {
+        return compute(a, a.length(), b, b.length());
+    }
 }
